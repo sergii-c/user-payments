@@ -47,4 +47,15 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>user-data-mvn-repo</id>
+			<url>https://raw.github.com/sergii-c/user-data/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
 </project>
