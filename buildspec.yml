@@ -16,7 +16,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - $(aws s3 cp s3://wc1-poc-spring-2019/user-data-client.jar user-data-client.jar)
+      - aws s3 cp s3://wc1-poc-spring-2019/user-data-client.jar user-data-client.jar
       - mvn install:install-file -Dfile=user-data-client.jar
       - mvn clean package
       - $(cp target/user-payments-*.jar user-payments.jar)      - echo Building the Docker image...
