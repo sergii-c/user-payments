@@ -17,10 +17,10 @@ phases:
     commands:
       - echo Build started on `date`
       - aws s3 cp s3://wc1-poc-spring-2019/user-data-client.jar user-data-client.jar
-      - mvn install:install-file -Dfile=user-data-client.jar
-      - ls ~/.m2/repository/com/wc1/poc/user-data-client/
+      - mvn install:install-file -Dfile=user-data-client.jar      
       - mvn clean package
-      - $(cp target/user-payments-*.jar user-payments.jar)      - echo Building the Docker image...
+      - cp target/user-payments-*.jar user-payments.jar
+      - echo Building the Docker image...
       - docker build -t poc-userpayments .
   post_build:
     commands:
