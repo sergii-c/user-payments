@@ -2,8 +2,7 @@ version: 0.1
 
 phases:      
   install:
-    commands:
-      - echo ### installing maven ###
+    commands:      
       - apt-get update -y
       - apt-get install -y software-properties-common
       - add-apt-repository ppa:openjdk-r/ppa
@@ -16,15 +15,16 @@ phases:
       - $(aws ecr get-login --no-include-email --region=us-east-1)
   build:
     commands:
-      - echo Build started on `date`      
-      - echo Now we go with maven
-      - mvn clean deploy
-      - echo Building the Docker image...
-      - echo docker build -t user-payments-poc-20190416 . 
+      - echo Build started on `date`
+      - $(aws s3 cp s3://wc1-poc-spring-2019/user-data-client.jar ./)
+      - mvn install:install-file -Dfile=user-data-client.jar
+      - mvn clean package
+      - $(cp target/user-payments-*.jar user-payments.jar)      - echo Building the Docker image...
+      - docker build -t poc-userpayments .
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Tagging image
-      - echo docker tag user-payments-poc-20190416:latest 671124307843.dkr.ecr.us-east-1.amazonaws.com/poc-tutorial:latest
+      - docker tag poc-userpayments:latest 671124307843.dkr.ecr.us-east-1.amazonaws.com/poc-tutorial:latest
       - echo Pushing the Docker image...
-      - echo docker push 671124307843.dkr.ecr.us-east-1.amazonaws.com/poc-tutorial:latest
+      - docker push 671124307843.dkr.ecr.us-east-1.amazonaws.com/poc-tutorial:latest
