@@ -39,14 +39,6 @@ public class UserPaymentsController {
     @GetMapping("/user-payment/{id}")
     @ResponseBody
     public ResponseEntity<String> getPayment(@PathVariable(name="id") int id) {
-        UserPayment paymnt = payments.get(id);
-        log.info("id: " + id);
-        log.info("payment: " + paymnt.getAmount());
-
-        UserDataDto usr = userDataClient.getUser(paymnt.getUserId());
-        log.info("usr: " + usr.getName());
-
-
         return Optional.ofNullable(payments.get(id)).flatMap(userPayment -> Optional.ofNullable(userDataClient.getUser(userPayment.getUserId()))
                 .map(user -> {
                     String output = String.format("%s %s %s %s", userPayment.getPaymentId(), user.getName(), user.getLastName(), userPayment.getAmount());
