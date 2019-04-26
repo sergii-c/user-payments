@@ -1,7 +1,9 @@
 package com.wc1.poc.userpayments.controller;
 
 import com.wc1.poc.userdata.UserDataClient;
+import com.wc1.poc.userdata.dto.UserDataDto;
 import com.wc1.poc.userpayments.domain.UserPayment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
+@Slf4j
 public class UserPaymentsController {
 
     @Autowired
@@ -31,6 +34,14 @@ public class UserPaymentsController {
     @GetMapping("/user-payment/{id}")
     @ResponseBody
     public ResponseEntity<String> getPayment(@PathVariable(name="id") int id) {
+        UserPayment paymnt = payments.get(id);
+        log.info("id: " + id);
+        log.info("payment: " + paymnt.getAmount());
+
+        UserDataDto usr = userDataClient.getUser(paymnt.getUserId());
+        log.info("usr: " + usr.getName());
+
+
         return Optional.ofNullable(payments.get(id)).flatMap(userPayment -> Optional.ofNullable(userDataClient.getUser(userPayment.getUserId()))
                 .map(user -> {
                     String output = String.format("%s %s %s %s", userPayment.getPaymentId(), user.getName(), user.getLastName(), userPayment.getAmount());
