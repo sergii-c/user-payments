@@ -31,6 +31,11 @@ public class UserPaymentsController {
         put(4, new UserPayment(4, 1, new BigDecimal(1000)));
     }};
 
+    @GetMapping("/")
+    public String greeting() {
+        return "ping";
+    }
+
     @GetMapping("/user-payment/{id}")
     @ResponseBody
     public ResponseEntity<String> getPayment(@PathVariable(name="id") int id) {
